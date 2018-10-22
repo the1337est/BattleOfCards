@@ -31,7 +31,10 @@ public class Champion : MonoBehaviour
         State = ChampionState.Idle;
     }
 
-
+    public void SetColor(Color color)
+    {
+        GetComponent<MeshRenderer>().material.color = color;
+    }
 
     private void Update()
     {

@@ -109,5 +109,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
-  Position: {x: 0, y: 0}
+  Slot: {fileID: 0}
   State: 0
