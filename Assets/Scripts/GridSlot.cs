@@ -7,19 +7,12 @@ public class GridSlot : MonoBehaviour
 
     public Champion Champion;
 
-    public GridRow ParentRow { get; private set; }
+
+    public GridRow ParentRow;
     public GridPos Position { get; private set; }
 
     MeshFilter mf;
     MeshRenderer rend;
-
-    private void Awake()
-    {
-        mf = GetComponent<MeshFilter>();
-        rend = GetComponent<MeshRenderer>();
-
-        CreateMesh();
-    }
 
     public bool IsEmpty
     {
@@ -31,6 +24,7 @@ public class GridSlot : MonoBehaviour
 
     float width = 0.9f;
 
+    [ExecuteInEditMode]
     void CreateMesh()
     {
         Mesh mesh = new Mesh();
@@ -76,14 +70,21 @@ public class GridSlot : MonoBehaviour
         uv[3] = new Vector2(1, 1);
 
         mesh.uv = uv;
+        
     }
 
+    [ExecuteInEditMode]
     public void Init(GridRow parent, GridPos position)
     {
         ParentRow = parent;
         Position = position;
         transform.position = new Vector3(Position.X + (3 * (position.Side-1)), 0f, Position.Y);
         name = "Slot (" + position.X + ", " + position.Y + ")";
+
+        mf = GetComponent<MeshFilter>();
+        rend = GetComponent<MeshRenderer>();
+
+        CreateMesh();
     }
 
 }

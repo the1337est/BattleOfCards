@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class BattleGrid : MonoBehaviour
 {
 
-    public GridArea SideA;
-    public GridArea SideB;
+    public Team TeamA;
+    public Team TeamB;
 
-    void Start ()
+    public bool Refresh = false;
+
+    void Update()
     {
-        SideA.Init(1);
-        SideB.Init(2);
-	}
-	
+        if (Refresh)
+        {
+            Refresh = false;
+            TeamA.Unload();
+            TeamB.Unload();
+            TeamA.Init(1);
+            TeamB.Init(2);
+        }
+    }
+
 }

@@ -9,7 +9,9 @@ public class GridRow : MonoBehaviour
     public int RowID;
 
     public List<GridSlot> Slots;
+    public GridSlot SlotPrefab;
 
+    [ExecuteInEditMode]
     public void InitializeSlots(int side, int rowId)
     {
 
@@ -18,7 +20,7 @@ public class GridRow : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            GridSlot slot = Instantiate(GameManager.Instance.SlotPrefab, transform);
+            GridSlot slot = Instantiate(SlotPrefab, transform);
             slot.Init(this, new GridPos { Side = Side, X = i, Y = RowID });
             Slots.Add(slot);
         }

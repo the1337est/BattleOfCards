@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class ChampionCreator
 {
+#if UNITY_EDITOR
     [MenuItem("BoC/Create Champion")]
     public static void CreateChampion()
     {
@@ -17,4 +18,5 @@ public class ChampionCreator
         Selection.activeObject = championData;
 
     }
+#endif
 }
