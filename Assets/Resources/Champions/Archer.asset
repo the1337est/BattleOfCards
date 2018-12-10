@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68613540bd34fad45aada30b7efa1dc8, type: 3}
+  m_Name: Archer
+  m_EditorClassIdentifier: 
+  Name: Archer
+  MaxHealth: 4
+  Damage: 4
+  Cost: 3
+  Background: {r: 0.08627451, g: 0.5058824, b: 0.050980397, a: 1}
+  Type: 2
+  Model: {fileID: 1308128443274590, guid: 6797b98e79aff9c439084263c9b8b80d, type: 2}
+  Portrait: {fileID: 21300000, guid: ec8db145535bae44195b7ac67d00ed7f, type: 3}

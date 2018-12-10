@@ -9,6 +9,10 @@ public class ChampionData : ScriptableObject
     public string Name;
     public int MaxHealth;
     public int Damage;
+    public int Cost;
+
+    public Color Background;
+
     public ChampionType Type;
 
     public GameObject Model;
