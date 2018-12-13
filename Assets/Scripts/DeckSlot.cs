@@ -41,6 +41,11 @@ public class DeckSlot : MonoBehaviour
         GameManager.OnMatchDataChanged += OnDataUpdate;
     }
 
+    private void OnDisable()
+    {
+        GameManager.OnMatchDataChanged -= OnDataUpdate;
+    }
+
     private void OnDataUpdate(MatchData data)
     {
         if (GameManager.Instance.Turn == Player.Blue)

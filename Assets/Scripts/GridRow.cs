@@ -26,16 +26,31 @@ public class GridRow : MonoBehaviour
         }
     }
 
-    public GridSlot GetFirstTarget()
+    public GridSlot GetFirstTarget(Player player)
     {
-        for (int i = 0; i < Slots.Count; i++)
+        if (player == Player.Red)
         {
-            if (!Slots[i].IsEmpty)
+            for (int i = Slots.Count - 1; i >= 0; i--)
             {
-                return Slots[i];
+                if (!Slots[i].IsEmpty)
+                {
+                    return Slots[i];
+                }
             }
+            return null;
         }
-        return null;
+        else
+        {
+            for (int i = 0; i < Slots.Count; i++)
+            {
+                if (!Slots[i].IsEmpty)
+                {
+                    return Slots[i];
+                }
+            }
+            return null;
+        }
+
     }
 
 }

@@ -66,14 +66,14 @@ public class Team : MonoBehaviour
                 if (!slot.IsEmpty)
                 {
                     GridRow opponentRow = grid.GetOpponentRow(Side, i);
-                    GridSlot target = opponentRow.GetFirstTarget();
+                    GridSlot target = opponentRow.GetFirstTarget(Side);
                     if (target != null)
                     {
                         Debug.Log("Target: " + target.Champion.Data.Name);
                         Vector3 pos = slot.Champion.transform.position;
-                        slot.Champion.transform.DOMove(target.Champion.transform.position, 0.15f).OnComplete(() => 
+                        slot.Champion.transform.DOMove(target.Champion.transform.position, GameManager.Instance.AttackDuration / 2).OnComplete(() => 
                         {
-                            slot.Champion.transform.DOMove(pos, 0.15f);
+                            slot.Champion.transform.DOMove(pos, GameManager.Instance.AttackDuration / 2);
                             target.TakeDamage(slot.Champion.Data.Damage);
                         });
                         //animate
@@ -83,16 +83,16 @@ public class Team : MonoBehaviour
                         Debug.Log("Target was not found");
                         Castle c = grid.GetOpponentCastle(Side);
                         Vector3 pos = slot.Champion.transform.position;
-                        slot.Champion.transform.DOMove(c.transform.position, 0.15f).OnComplete(() =>
+                        slot.Champion.transform.DOMove(c.transform.position, GameManager.Instance.AttackDuration / 2).OnComplete(() =>
                         {
-                            slot.Champion.transform.DOMove(pos, 0.15f);
+                            slot.Champion.transform.DOMove(pos, GameManager.Instance.AttackDuration/2);
                             c.TakeDamage(slot.Champion.Data.Damage);
                         });
                         
 
                         //animate
                     }
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(GameManager.Instance.AttackDuration);
                 }
             }
         }

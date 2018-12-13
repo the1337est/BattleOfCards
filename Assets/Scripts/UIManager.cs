@@ -19,6 +19,9 @@ public class UIManager : Singleton<UIManager>
     public Text RedMana;
     public Text Turn;
     public Text Win;
+    public Text Timer;
+
+    int timer = 0;
 
     public Image DeckImage;
 
@@ -34,7 +37,10 @@ public class UIManager : Singleton<UIManager>
         MenuUI.gameObject.SetActive(false);
         GameUI.gameObject.SetActive(true);
         GameManager.Instance.StartGame();
+        InvokeRepeating("Tick", 1f, 1f);
     }
+
+
 
     private void OnEnable()
     {
@@ -96,6 +102,16 @@ public class UIManager : Singleton<UIManager>
     {
         SceneManager.LoadScene("Game");
             
+    }
+
+    private void Tick()
+    {
+        if (GameManager.Instance.State != GameState.Menu)
+        {
+            timer++;
+            TimeSpan span = TimeSpan.FromSeconds(timer);
+            Timer.text = string.Format("{0:00}:{1:00}", span.Minutes, span.Seconds);
+        }
     }
 
 }

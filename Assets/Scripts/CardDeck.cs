@@ -7,6 +7,22 @@ public class CardDeck : MonoBehaviour
 
     public List<DeckSlot> Slots;
 
+    public int MinimumCost
+    {
+        get
+        {
+            int min = int.MaxValue;
+            for (int i = 0; i < Slots.Count; i++)
+            {
+                if (Slots[i].ChampionData.Cost < min)
+                {
+                    min = Slots[i].ChampionData.Cost;
+                }
+            }
+            return min;
+        }
+    }
+
     public void LoadDeck(Player player)
     {
         if (player == Player.Blue)

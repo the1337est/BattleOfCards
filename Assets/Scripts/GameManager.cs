@@ -8,6 +8,9 @@ public class GameManager : Singleton<GameManager>
 
     public const string CHAMPIONS_PATH = "Champions/";
     public Champion ChampionPrefab;
+    public HealthBar HealthBarPrefab;
+
+    public Canvas WorldSpace;
 
     public GridRow RowPrefab;
     public GridSlot SlotPrefab;
@@ -38,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     public int ManaAtStart = 5; 
     public int ManaPerRound = 5;
     public int CastleHPAtStart = 25;
+    public float AttackDuration = 0.3f;
 
 
     public GameState State;
@@ -81,14 +85,14 @@ public class GameManager : Singleton<GameManager>
     {
         if (Turn == Player.Blue)
         {
-            if (Data.BlueMana < 1)
+            if (Data.BlueMana < UIManager.Instance.Deck.MinimumCost)
             {
                 ChangeTurn();
             }
         }
         else
         {
-            if (Data.RedMana < 1)
+            if (Data.RedMana < UIManager.Instance.Deck.MinimumCost)
             {
                 ChangeTurn();
             }
@@ -199,6 +203,17 @@ public class GameManager : Singleton<GameManager>
 
                         if ((Turn == Player.Blue && Data.BlueMana >= currentChampion.Cost) || (Turn == Player.Red && Data.RedMana >= currentChampion.Cost))
                         {
+                            
+                            Target.transform.parent = currentSlot.transform;
+                            Target.transform.localPosition = Vector3.up * 0.25f;
+                            Target.Slot = currentSlot;
+                            currentSlot.Champion = Target;
+                            HealthBar bar = Instantiate(HealthBarPrefab, WorldSpace.transform);
+                            Target.Bar = bar;
+                            Target.Spawn();
+                            currentDeckSlot.LoadNewCard(Turn);
+                            placed = true;
+
                             if (Turn == Player.Blue)
                             {
                                 Data = Data.Add(Player.Blue, StatType.Mana, -currentChampion.Cost);
@@ -207,15 +222,6 @@ public class GameManager : Singleton<GameManager>
                             {
                                 Data = Data.Add(Player.Red, StatType.Mana, -currentChampion.Cost);
                             }
-                            
-                            //Debug.Log("Clicked on slot: Side: " + currentSlot.Position.Side + " | X: " + currentSlot.Position.X + " | Y: " + currentSlot.Position.Y);
-                            Target.transform.parent = currentSlot.transform;
-                            Target.transform.localPosition = Vector3.up * 0.25f;
-                            Target.Slot = currentSlot;
-                            currentSlot.Champion = Target;
-                            Target.Spawn();
-                            currentDeckSlot.LoadNewCard(Turn);
-                            placed = true;
                         }
                         
                     }

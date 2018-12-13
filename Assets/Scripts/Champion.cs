@@ -7,9 +7,11 @@ public class Champion : MonoBehaviour
 {
 
     public ChampionData Data;
-    public Text HPText;
+
+    public HealthBar Bar;
 
     private int direction = 1;
+    private float scale = 0.01f;
 
     int health;
     public int Health
@@ -18,11 +20,12 @@ public class Champion : MonoBehaviour
         set
         {
             health = value;
+            Bar.Set(Mathf.Clamp01((float)health / (float)Data.MaxHealth));
             //HPText.text = health.ToString();
         }
     }
-
-
+    bool logged = false;
+        
     public GridSlot Slot;
     public ChampionState State;
 
@@ -38,24 +41,25 @@ public class Champion : MonoBehaviour
 
     private void Update()
     {
-        //if (direction == 1)
-        //{
-        //    if (0.6f - transform.position.y <= 0.05f)
-        //    {
-        //        direction = -1;
-        //    }
-        //    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 0.6f, transform.position.z), Time.deltaTime * 1.2f);
 
-        //}
-        //else
-        //{
-        //    if (transform.position.y - 0.3f <= 0.05f)
-        //    {
-        //        direction = 1;
-        //    }
-        //    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 0.3f, transform.position.z), Time.deltaTime * 1.2f);
-        //}
-        
+        if (Bar != null)
+        {
+            if (!logged)
+            {
+                logged = true;
+                Debug.Log("Champion pos: " + transform.position + " | Parameter: " + (transform.position + (Vector3.up * 0.35f)) + " | Final: " + Camera.main.WorldToScreenPoint(transform.position + (Vector3.up * 0.35f)));
+            }
+            Bar.transform.position = (transform.position + (Vector3.up * 0.45f));
+        }
+
     }
 
+
+    private void OnDestroy()
+    {
+        if (Bar != null)
+        {
+            Destroy(Bar.gameObject);
+        }
+    }
 }
