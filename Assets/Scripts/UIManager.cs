@@ -36,6 +36,15 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.StartGame();
     }
 
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
     private void OnEnable()
     {
         GameManager.OnMatchDataChanged += UpdateMatchUI;
