@@ -10,10 +10,12 @@ public class InputHandler : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 {
 
     public Image Image;
+    DeckSlot slot;
 
     void Start()
     {
         Image = GetComponent<Image>();
+        slot = GetComponent<DeckSlot>();
 
     }
 
@@ -24,7 +26,10 @@ public class InputHandler : MonoBehaviour, IPointerDownHandler, IPointerClickHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        GameManager.Instance.TouchDown(Image.color);
+        if (slot.Allow)
+        {
+            GameManager.Instance.TouchDown(slot.ChampionData);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)

@@ -7,7 +7,6 @@ public enum GameState
 
     Menu,
     Animating,
-    PlayerTurn,
-    EnemyTurn
+    Playing
 	
 }

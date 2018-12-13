@@ -14,7 +14,7 @@ MonoBehaviour:
   Name: Knight
   MaxHealth: 6
   Damage: 4
-  Cost: 4
+  Cost: 3
   Background: {r: 0.050980397, g: 0.18039216, b: 0.50980395, a: 1}
   Type: 1
   Model: {fileID: 1308128443274590, guid: 6797b98e79aff9c439084263c9b8b80d, type: 2}

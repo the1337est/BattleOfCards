@@ -23,4 +23,27 @@ public class BattleGrid : MonoBehaviour
         }
     }
 
+    public GridRow GetOpponentRow(Player player, int rowID)
+    {
+        if (player == Player.Blue)
+        {
+            return TeamB.Rows[rowID];
+        }
+        else
+        {
+            return TeamA.Rows[rowID];
+        }
+    }
+
+    public Castle GetOpponentCastle(Player player)
+    {
+        if (player == Player.Blue)
+        {
+            return GameManager.Instance.RedCastle;
+        }
+        else
+        {
+            return GameManager.Instance.BlueCastle;
+        }
+    }
 }

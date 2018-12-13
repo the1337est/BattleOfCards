@@ -87,4 +87,23 @@ public class GridSlot : MonoBehaviour
         CreateMesh();
     }
 
+    public void TakeDamage(int damage)
+    {
+        if (Champion != null)
+        {
+            Champion.Health -= damage;
+            if (Champion.Health <= 0)
+            {
+                Clear();
+            }
+        }
+    }
+
+    public void Clear()
+    {
+        Debug.Log("Destroying " + gameObject.name);
+        Destroy(Champion.gameObject);
+        Champion = null;
+    }
+
 }

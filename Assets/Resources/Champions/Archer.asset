@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   Name: Archer
-  MaxHealth: 4
-  Damage: 4
-  Cost: 3
+  MaxHealth: 8
+  Damage: 3
+  Cost: 4
   Background: {r: 0.08627451, g: 0.5058824, b: 0.050980397, a: 1}
   Type: 2
   Model: {fileID: 1308128443274590, guid: 6797b98e79aff9c439084263c9b8b80d, type: 2}

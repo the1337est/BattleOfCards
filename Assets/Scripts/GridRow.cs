@@ -25,4 +25,17 @@ public class GridRow : MonoBehaviour
             Slots.Add(slot);
         }
     }
+
+    public GridSlot GetFirstTarget()
+    {
+        for (int i = 0; i < Slots.Count; i++)
+        {
+            if (!Slots[i].IsEmpty)
+            {
+                return Slots[i];
+            }
+        }
+        return null;
+    }
+
 }

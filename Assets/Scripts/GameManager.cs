@@ -15,11 +15,24 @@ public class GameManager : Singleton<GameManager>
     public Castle BlueCastle;
     public Castle RedCastle;
 
+    private BattleGrid grid;
+
     public bool Dragging = false;
     public Champion Target = null;
 
     GridSlot currentSlot;
     Camera cam;
+
+    public List<ChampionData> BlueCards;
+    public List<ChampionData> RedCards;
+
+    private ChampionData currentChampion = null;
+
+    public delegate void TurnDelegate();
+    public static event TurnDelegate OnTurnComplete;
+
+    public delegate void MatchDataDelegate(MatchData data);
+    public static event MatchDataDelegate OnMatchDataChanged;
 
     public GameState State;
 
@@ -50,6 +63,7 @@ public class GameManager : Singleton<GameManager>
             CheckTurn();
             if (OnMatchDataChanged != null)
             {
+                //Debug.Log("Data was changed");
                 OnMatchDataChanged(data);
             }
             
@@ -79,28 +93,47 @@ public class GameManager : Singleton<GameManager>
     {
         cam = Camera.main;
         State = GameState.Menu;
+        grid = FindObjectOfType<BattleGrid>();
     }
 
-    public delegate void TurnDelegate();
-    public static event TurnDelegate OnTurnComplete;
+    private void OnEnable()
+    {
+        Team.OnAttackFinish += OnTeamAttackFinish;
 
-    public delegate void MatchDataDelegate(MatchData data);
-    public static event MatchDataDelegate OnMatchDataChanged;
+    }
 
-    public List<ChampionData> BlueCards;
-    public List<ChampionData> RedCards;
+    private void OnDisable()
+    {
+        Team.OnAttackFinish -= OnTeamAttackFinish;
+    }
+
+    private void OnTeamAttackFinish(Player side)
+    {
+
+        Debug.Log("Team " + side.ToString() + " finished attack");
+        if (side == Player.Blue)
+        {
+            StartCoroutine(grid.TeamB.Attack());
+        }
+        else
+        {
+            if (OnTurnComplete != null)
+            {
+                State = GameState.Playing;
+                Turn = Player.Blue;
+                OnTurnComplete();
+            }
+        }
+    }
 
     public void StartGame()
     {
-        State = GameState.PlayerTurn;
+        State = GameState.Playing;
         Turn = Player.Blue;
-        Data = new MatchData
-        {
-            RedHP = 25,
-            BlueHP = 25,
-            BlueMana = 5,
-            RedMana = 5
-        };
+        UIManager.Instance.Deck.LoadDeck(Turn);
+        BlueCastle.HP = 25;
+        RedCastle.HP = 25;
+        Data = new MatchData(25, 5, 25, 5);
 
     }
 
@@ -116,7 +149,7 @@ public class GameManager : Singleton<GameManager>
             RedCastle.SetFire(!RedCastle.Enabled);
         }
 
-        if (State == GameState.PlayerTurn)
+        if (State == GameState.Playing)
         {
             if (Dragging)
             {
@@ -157,12 +190,27 @@ public class GameManager : Singleton<GameManager>
 
                     if (currentSlot != null)
                     {
-                        Debug.Log("Clicked on slot: Side: " + currentSlot.Position.Side + " | X: " + currentSlot.Position.X + " | Y: " + currentSlot.Position.Y);
-                        Target.transform.parent = currentSlot.transform;
-                        Target.transform.localPosition = Vector3.up * 0.25f;
-                        Target.Slot = currentSlot;
-                        currentSlot.Champion = Target;
-                        placed = true;
+
+                        if ((Turn == Player.Blue && Data.BlueMana >= currentChampion.Cost) || (Turn == Player.Red && Data.RedMana >= currentChampion.Cost))
+                        {
+                            if (Turn == Player.Blue)
+                            {
+                                Data = Data.Add(Player.Blue, StatType.Mana, -currentChampion.Cost);
+                            }
+                            else
+                            {
+                                Data = Data.Add(Player.Red, StatType.Mana, -currentChampion.Cost);
+                            }
+                            
+                            //Debug.Log("Clicked on slot: Side: " + currentSlot.Position.Side + " | X: " + currentSlot.Position.X + " | Y: " + currentSlot.Position.Y);
+                            Target.transform.parent = currentSlot.transform;
+                            Target.transform.localPosition = Vector3.up * 0.25f;
+                            Target.Slot = currentSlot;
+                            currentSlot.Champion = Target;
+                            Target.Spawn();
+                            placed = true;
+                        }
+                        
                     }
 
                     //if (Physics.Raycast(ray, out hit, 100))
@@ -188,6 +236,7 @@ public class GameManager : Singleton<GameManager>
                         Destroy(Target.gameObject);
                     }
                     Dragging = false;
+                    currentChampion = null;
                 }
             }
         }
@@ -198,22 +247,28 @@ public class GameManager : Singleton<GameManager>
         if (Turn == Player.Blue)
         {
             Turn = Player.Red;
-            Data.RedMana += 3;
+            Data = Data.Add(Player.Blue, StatType.Mana, 8);
         }
         else
         {
+            
+            State = GameState.Animating;
             Turn = Player.Blue;
-            Data.BlueMana += 3;
+            Data = Data.Add(Player.Red, StatType.Mana, 8);
+            Simulate();
         }
+        UIManager.Instance.Deck.LoadDeck(Turn);
     }
 
-    public void TouchDown(Color color)
+    public void TouchDown(ChampionData champion)
     {
         if (!Dragging)
         {
+            currentChampion = champion;
             Dragging = true;
             Champion c = Instantiate(ChampionPrefab, transform);
-            c.SetColor(color);
+            c.Data = currentChampion;
+            c.SetColor(champion.Background);
             Target = c;
         }
     }
@@ -225,9 +280,21 @@ public class GameManager : Singleton<GameManager>
         slot.Champion = c;
     }
 
-    public void EnemyTurn()
+    public void Simulate()
     {
+        StartCoroutine(grid.TeamA.Attack());
+    }
 
+    public void GameOver(Player player)
+    {
+        if (player == Player.Blue)
+        {
+            UIManager.Instance.ShowGameOver(Player.Red);
+        }
+        else
+        {
+            UIManager.Instance.ShowGameOver(Player.Blue);
+        }
     }
 
 }

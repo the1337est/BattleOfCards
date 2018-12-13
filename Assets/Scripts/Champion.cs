@@ -1,34 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class Champion : MonoBehaviour
 {
 
     public ChampionData Data;
+    public Text HPText;
 
     private int direction = 1;
 
+    int health;
     public int Health
     {
-        get;
-        set;
+        get { return health; }
+        set
+        {
+            health = value;
+            //HPText.text = health.ToString();
+        }
     }
+
 
     public GridSlot Slot;
     public ChampionState State;
 
-    public void Initialize(ChampionData data)
+    public void Spawn()
     {
-        Data = data;
         Health = Data.MaxHealth;
-        State = ChampionState.None;
-    }
-
-    public void Spawn(Vector2 position)
-    {
-        State = ChampionState.Idle;
     }
 
     public void SetColor(Color color)

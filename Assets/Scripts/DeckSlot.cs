@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,18 +15,35 @@ public class DeckSlot : MonoBehaviour
     public Image Icon;
     public Image BG;
 
-    private void Awake()
-    {
-        Set(ChampionData);
-    }
+    public Image Blocker;
+
+    public bool Allow { get { return !Blocker.gameObject.activeSelf; } }
 
     public void Set(ChampionData champion)
     {
+        ChampionData = champion;
         HealthText.text = champion.MaxHealth.ToString();
         AttackText.text = champion.Damage.ToString();
         ManaText.text = champion.Cost.ToString();
         Icon.sprite = champion.Portrait;
         BG.color = champion.Background;
     }
-	
+
+    private void OnEnable()
+    {
+        GameManager.OnMatchDataChanged += OnDataUpdate;
+    }
+
+    private void OnDataUpdate(MatchData data)
+    {
+        if (GameManager.Instance.Turn == Player.Blue)
+        {
+            Blocker.gameObject.SetActive(data.BlueMana < ChampionData.Cost);
+        }
+        else
+        {
+            Blocker.gameObject.SetActive(data.RedMana < ChampionData.Cost);
+        }
+    }
+
 }

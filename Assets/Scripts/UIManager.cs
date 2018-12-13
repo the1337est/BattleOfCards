@@ -1,24 +1,33 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
 
     public RectTransform MenuUI;
     public RectTransform GameUI;
+    public RectTransform CardDeck;
+    public RectTransform GameOver;
 
     public Text BlueHP;
     public Text BlueMana;
     public Text RedHP;
     public Text RedMana;
     public Text Turn;
+    public Text Win;
 
     public Image DeckImage;
 
     public Color BlueColor;
     public Color RedColor;
+
+    public CardDeck Deck;
+
+    public Button PassButton;
 
     public void StartGame()
     {
@@ -30,11 +39,18 @@ public class UIManager : Singleton<UIManager>
     private void OnEnable()
     {
         GameManager.OnMatchDataChanged += UpdateMatchUI;
+        GameManager.OnTurnComplete += OnTurnComplete;
+    }
+
+    private void OnTurnComplete()
+    {
+        UpdateTurn(Player.Blue);
     }
 
     private void OnDisable()
     {
         GameManager.OnMatchDataChanged -= UpdateMatchUI;
+        GameManager.OnTurnComplete -= OnTurnComplete;
     }
 
     public void UpdateTurn(Player player)
@@ -51,15 +67,35 @@ public class UIManager : Singleton<UIManager>
             default:
                 break;
         }
+        CardDeck.gameObject.SetActive(GameManager.Instance.State == GameState.Playing);
+        PassButton.gameObject.SetActive(GameManager.Instance.State != GameState.Animating);
     }
 
     public void UpdateMatchUI(MatchData data)
     {
-        BlueHP.text = data.BlueHP.ToString();
-        RedHP.text = data.RedHP.ToString();
-        BlueMana.text = data.BlueHP.ToString();
-        RedMana.text = data.RedHP.ToString();
 
+        //Debug.Log("Data: " + data.BlueMana + " | " + data.RedMana);
+        BlueMana.text = data.BlueMana.ToString();
+        RedMana.text = data.RedMana.ToString();
+    }
+
+    public void UpdateHP()
+    {
+        BlueHP.text = GameManager.Instance.BlueCastle.HP.ToString();
+        RedHP.text = GameManager.Instance.RedCastle.HP.ToString();
+    }
+
+    public void ShowGameOver(Player winner)
+    {
+        Win.text = winner.ToString().ToUpper() + " WINS!";
+        GameUI.gameObject.SetActive(false);
+        GameOver.gameObject.SetActive(true);
+
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Game");
+            
     }
 
 }

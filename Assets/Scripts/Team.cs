@@ -1,32 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Team : MonoBehaviour
 {
 
-    public Player Side { get; private set; }
+    public Player Side;
 
     public List<GridRow> Rows;
-
     public GridRow RowPrefab;
 
-    public List<Champion> Champions;
-
-    public List<GameObject> ChampionPrefabs;
+    BattleGrid grid;
 
     public Player PlayerType;
 
-    public int Energy;
 
-    public void Add(Champion champion)
-    {
-        Champions.Add(champion);
-    }
+    public delegate void AttackDelegate(Player side);
+    public static event AttackDelegate OnAttackFinish;
 
-    public void Remove(Champion champion)
+    private void Start()
     {
-        Champions.Remove(champion);
+        grid = FindObjectOfType<BattleGrid>();
     }
 
     [ExecuteInEditMode]
@@ -59,11 +54,52 @@ public class Team : MonoBehaviour
             DestroyImmediate(toRemove[i].gameObject);
         }
         Rows.Clear();
-    }   
-
-    public void AutoPlay()
-    {
-
     }
 
+    public IEnumerator Attack()
+    {
+        for (int i = Rows.Count - 1; i >= 0; i--)
+        {
+            for (int s = Rows[i].Slots.Count - 1; s >= 0; s--)
+            {
+                GridSlot slot = Rows[i].Slots[s];
+                if (!slot.IsEmpty)
+                {
+                    GridRow opponentRow = grid.GetOpponentRow(Side, i);
+                    GridSlot target = opponentRow.GetFirstTarget();
+                    if (target != null)
+                    {
+                        Debug.Log("Target: " + target.Champion.Data.Name);
+                        Vector3 pos = slot.Champion.transform.position;
+                        slot.Champion.transform.DOMove(target.Champion.transform.position, 0.15f).OnComplete(() => 
+                        {
+                            slot.Champion.transform.DOMove(pos, 0.15f);
+                            target.TakeDamage(slot.Champion.Data.Damage);
+                        });
+                        //animate
+                    }
+                    else
+                    {
+                        Debug.Log("Target was not found");
+                        Castle c = grid.GetOpponentCastle(Side);
+                        Vector3 pos = slot.Champion.transform.position;
+                        slot.Champion.transform.DOMove(c.transform.position, 0.15f).OnComplete(() =>
+                        {
+                            slot.Champion.transform.DOMove(pos, 0.15f);
+                            c.TakeDamage(slot.Champion.Data.Damage);
+                        });
+                        
+
+                        //animate
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                }
+            }
+        }
+        if (OnAttackFinish != null)
+        {
+            OnAttackFinish(Side);
+        }
+        yield return new WaitForSeconds(1f);
+    }
 }
