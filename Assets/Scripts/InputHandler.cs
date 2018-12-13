@@ -28,7 +28,7 @@ public class InputHandler : MonoBehaviour, IPointerDownHandler, IPointerClickHan
     {
         if (slot.Allow)
         {
-            GameManager.Instance.TouchDown(slot.ChampionData);
+            GameManager.Instance.TouchDown(slot.ChampionData, slot);
         }
     }
 

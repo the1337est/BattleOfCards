@@ -26,5 +26,18 @@ public class CardDeck : MonoBehaviour
             }
         }
     }
+
+    public ChampionData GetRandomChampion(Player player)
+    {
+
+        if (player == Player.Blue)
+        {
+            return GameManager.Instance.BlueCards[Random.Range(0, GameManager.Instance.BlueCards.Count)];
+        }
+        else
+        {
+            return GameManager.Instance.RedCards[Random.Range(0, GameManager.Instance.RedCards.Count)];
+        }
+    }
 	
 }

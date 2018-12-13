@@ -19,6 +19,13 @@ public class DeckSlot : MonoBehaviour
 
     public bool Allow { get { return !Blocker.gameObject.activeSelf; } }
 
+    private CardDeck deck;
+
+    private void Awake()
+    {
+        deck = FindObjectOfType<CardDeck>();
+    }
+
     public void Set(ChampionData champion)
     {
         ChampionData = champion;
@@ -44,6 +51,11 @@ public class DeckSlot : MonoBehaviour
         {
             Blocker.gameObject.SetActive(data.RedMana < ChampionData.Cost);
         }
+    }
+
+    public void LoadNewCard(Player player)
+    {
+        Set(deck.GetRandomChampion(player));
     }
 
 }
