@@ -18,8 +18,8 @@ public class BattleGrid : MonoBehaviour
             Refresh = false;
             TeamA.Unload();
             TeamB.Unload();
-            TeamA.Init(1);
-            TeamB.Init(2);
+            TeamA.Init(Player.Blue);
+            TeamB.Init(Player.Red);
         }
     }
 

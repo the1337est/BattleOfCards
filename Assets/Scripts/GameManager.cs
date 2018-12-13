@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +12,8 @@ public class GameManager : Singleton<GameManager>
     public GridRow RowPrefab;
     public GridSlot SlotPrefab;
 
-    public Castle PlayerCastle;
-    public Castle EnemyCastle;
+    public Castle BlueCastle;
+    public Castle RedCastle;
 
     public bool Dragging = false;
     public Champion Target = null;
@@ -21,6 +22,20 @@ public class GameManager : Singleton<GameManager>
     Camera cam;
 
     public GameState State;
+
+    private Player turn;
+    public Player Turn
+    {
+        get
+        {
+            return turn;
+        }
+        set
+        {
+            turn = value;
+            UIManager.Instance.UpdateTurn(Turn);
+        }
+    }
 
     private MatchData data;
     public MatchData Data
@@ -32,6 +47,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             data = value;
+            CheckTurn();
             if (OnMatchDataChanged != null)
             {
                 OnMatchDataChanged(data);
@@ -39,6 +55,24 @@ public class GameManager : Singleton<GameManager>
             
         }
 
+    }
+
+    private void CheckTurn()
+    {
+        if (Turn == Player.Blue)
+        {
+            if (Data.BlueMana < 1)
+            {
+                ChangeTurn();
+            }
+        }
+        else
+        {
+            if (Data.RedMana < 1)
+            {
+                ChangeTurn();
+            }
+        }
     }
 
     private void Awake()
@@ -53,18 +87,19 @@ public class GameManager : Singleton<GameManager>
     public delegate void MatchDataDelegate(MatchData data);
     public static event MatchDataDelegate OnMatchDataChanged;
 
-    public List<ChampionData> PlayerCards;
-    public List<ChampionData> EnemyCards;
+    public List<ChampionData> BlueCards;
+    public List<ChampionData> RedCards;
 
     public void StartGame()
     {
         State = GameState.PlayerTurn;
+        Turn = Player.Blue;
         Data = new MatchData
         {
-            EHP = 25,
-            PHP = 25,
-            PMana = 5,
-            EMana = 5
+            RedHP = 25,
+            BlueHP = 25,
+            BlueMana = 5,
+            RedMana = 5
         };
 
     }
@@ -74,11 +109,11 @@ public class GameManager : Singleton<GameManager>
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            PlayerCastle.SetFire(!PlayerCastle.Enabled);
+            BlueCastle.SetFire(!BlueCastle.Enabled);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            EnemyCastle.SetFire(!EnemyCastle.Enabled);
+            RedCastle.SetFire(!RedCastle.Enabled);
         }
 
         if (State == GameState.PlayerTurn)
@@ -96,7 +131,7 @@ public class GameManager : Singleton<GameManager>
                         if (dragHit.collider.tag == "Slot")
                         {
                             GridSlot slot = dragHit.collider.GetComponent<GridSlot>();
-                            if (slot != null && slot.ParentRow.Side == 1)
+                            if (slot != null && slot.ParentRow.Side == Turn)
                             {
                                 if (slot.IsEmpty)
                                 {
@@ -155,6 +190,20 @@ public class GameManager : Singleton<GameManager>
                     Dragging = false;
                 }
             }
+        }
+    }
+
+    public void ChangeTurn()
+    {
+        if (Turn == Player.Blue)
+        {
+            Turn = Player.Red;
+            Data.RedMana += 3;
+        }
+        else
+        {
+            Turn = Player.Blue;
+            Data.BlueMana += 3;
         }
     }
 

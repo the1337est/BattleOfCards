@@ -5,7 +5,7 @@ using UnityEngine;
 public class Team : MonoBehaviour
 {
 
-    public int TeamID { get; private set; }
+    public Player Side { get; private set; }
 
     public List<GridRow> Rows;
 
@@ -30,19 +30,17 @@ public class Team : MonoBehaviour
     }
 
     [ExecuteInEditMode]
-    public void Init(int areaID)
+    public void Init(Player side)
     {
-        if (areaID >= 1 && areaID <= 2)
-        {
-            TeamID = areaID;
 
-            for (int i = 0; i < 4; i++)
-            {
-                GridRow row = Instantiate(RowPrefab, transform);
-                row.InitializeSlots(TeamID, i);
-                Rows.Add(row);
-                row.name = "Row " + i;
-            }
+        Side = side;
+
+        for (int i = 0; i < 4; i++)
+        {
+            GridRow row = Instantiate(RowPrefab, transform);
+            row.InitializeSlots(Side, i);
+            Rows.Add(row);
+            row.name = "Row " + i;
         }
     }
 
@@ -62,12 +60,6 @@ public class Team : MonoBehaviour
         }
         Rows.Clear();
     }   
-
-    public enum Player
-    {
-        A,
-        B
-    }
 
     public void AutoPlay()
     {

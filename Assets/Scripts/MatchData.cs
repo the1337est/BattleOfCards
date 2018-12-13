@@ -6,9 +6,9 @@ using UnityEngine;
 public class MatchData
 {
 
-    public int PHP;
-    public int PMana;
-    public int EHP;
-    public int EMana;
+    public int BlueHP;
+    public int BlueMana;
+    public int RedHP;
+    public int RedMana;
 
 }

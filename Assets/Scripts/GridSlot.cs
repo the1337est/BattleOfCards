@@ -78,7 +78,7 @@ public class GridSlot : MonoBehaviour
     {
         ParentRow = parent;
         Position = position;
-        transform.position = new Vector3(Position.X + (3 * (position.Side-1)), 0f, Position.Y);
+        transform.position = new Vector3(Position.X + (3 * ((int)position.Side-1)), 0f, Position.Y);
         name = "Slot (" + position.X + ", " + position.Y + ")";
 
         mf = GetComponent<MeshFilter>();

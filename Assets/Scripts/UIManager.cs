@@ -9,10 +9,16 @@ public class UIManager : Singleton<UIManager>
     public RectTransform MenuUI;
     public RectTransform GameUI;
 
-    public Text PlayerHP;
-    public Text PlayerMana;
-    public Text EnemyHP;
-    public Text EnemyMana;
+    public Text BlueHP;
+    public Text BlueMana;
+    public Text RedHP;
+    public Text RedMana;
+    public Text Turn;
+
+    public Image DeckImage;
+
+    public Color BlueColor;
+    public Color RedColor;
 
     public void StartGame()
     {
@@ -31,12 +37,28 @@ public class UIManager : Singleton<UIManager>
         GameManager.OnMatchDataChanged -= UpdateMatchUI;
     }
 
+    public void UpdateTurn(Player player)
+    {
+        Turn.text = player.ToString() + "'s Turn";
+        switch (player)
+        {
+            case Player.Blue:
+                DeckImage.color = BlueColor;
+                break;
+            case Player.Red:
+                DeckImage.color = RedColor;
+                break;
+            default:
+                break;
+        }
+    }
+
     public void UpdateMatchUI(MatchData data)
     {
-        PlayerHP.text = data.PHP.ToString();
-        EnemyHP.text = data.EHP.ToString();
-        PlayerMana.text = data.PMana.ToString();
-        EnemyMana.text = data.EMana.ToString();
+        BlueHP.text = data.BlueHP.ToString();
+        RedHP.text = data.RedHP.ToString();
+        BlueMana.text = data.BlueHP.ToString();
+        RedMana.text = data.RedHP.ToString();
 
     }
 

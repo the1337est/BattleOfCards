@@ -6,7 +6,7 @@ using UnityEngine;
 public struct GridPos
 {
 
-    public int Side;
+    public Player Side;
     public int X;
     public int Y;
 

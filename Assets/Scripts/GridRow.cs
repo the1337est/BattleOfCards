@@ -5,14 +5,14 @@ using UnityEngine;
 public class GridRow : MonoBehaviour
 {
 
-    public int Side;
+    public Player Side;
     public int RowID;
 
     public List<GridSlot> Slots;
     public GridSlot SlotPrefab;
 
     [ExecuteInEditMode]
-    public void InitializeSlots(int side, int rowId)
+    public void InitializeSlots(Player side, int rowId)
     {
 
         RowID = rowId;
@@ -21,7 +21,7 @@ public class GridRow : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             GridSlot slot = Instantiate(SlotPrefab, transform);
-            slot.Init(this, new GridPos { Side = Side, X = i, Y = RowID });
+            slot.Init(this, new GridPos { Side = side, X = i, Y = RowID });
             Slots.Add(slot);
         }
     }
