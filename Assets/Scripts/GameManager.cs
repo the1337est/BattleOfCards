@@ -27,12 +27,18 @@ public class GameManager : Singleton<GameManager>
     public List<ChampionData> RedCards;
 
     private ChampionData currentChampion = null;
+    private DeckSlot currentDeckSlot = null;
 
     public delegate void TurnDelegate();
     public static event TurnDelegate OnTurnComplete;
 
     public delegate void MatchDataDelegate(MatchData data);
     public static event MatchDataDelegate OnMatchDataChanged;
+
+    public int ManaAtStart = 5; 
+    public int ManaPerRound = 5;
+    public int CastleHPAtStart = 25;
+
 
     public GameState State;
 
@@ -131,9 +137,9 @@ public class GameManager : Singleton<GameManager>
         State = GameState.Playing;
         Turn = Player.Blue;
         UIManager.Instance.Deck.LoadDeck(Turn);
-        BlueCastle.HP = 25;
-        RedCastle.HP = 25;
-        Data = new MatchData(25, 5, 25, 5);
+        BlueCastle.HP = CastleHPAtStart;
+        RedCastle.HP = CastleHPAtStart;
+        Data = new MatchData(CastleHPAtStart, ManaAtStart, CastleHPAtStart, ManaAtStart);
 
     }
 
@@ -208,6 +214,7 @@ public class GameManager : Singleton<GameManager>
                             Target.Slot = currentSlot;
                             currentSlot.Champion = Target;
                             Target.Spawn();
+                            currentDeckSlot.LoadNewCard(Turn);
                             placed = true;
                         }
                         
@@ -237,6 +244,7 @@ public class GameManager : Singleton<GameManager>
                     }
                     Dragging = false;
                     currentChampion = null;
+                    currentDeckSlot = null;
                 }
             }
         }
@@ -247,24 +255,25 @@ public class GameManager : Singleton<GameManager>
         if (Turn == Player.Blue)
         {
             Turn = Player.Red;
-            Data = Data.Add(Player.Blue, StatType.Mana, 8);
+            Data = Data.Add(Player.Blue, StatType.Mana, ManaPerRound);
         }
         else
         {
             
             State = GameState.Animating;
             Turn = Player.Blue;
-            Data = Data.Add(Player.Red, StatType.Mana, 8);
+            Data = Data.Add(Player.Red, StatType.Mana, ManaPerRound);
             Simulate();
         }
         UIManager.Instance.Deck.LoadDeck(Turn);
     }
 
-    public void TouchDown(ChampionData champion)
+    public void TouchDown(ChampionData champion, DeckSlot slot)
     {
         if (!Dragging)
         {
             currentChampion = champion;
+            currentDeckSlot = slot;
             Dragging = true;
             Champion c = Instantiate(ChampionPrefab, transform);
             c.Data = currentChampion;
