@@ -70,6 +70,7 @@ public class GridSlot : MonoBehaviour
         uv[3] = new Vector2(1, 1);
 
         mesh.uv = uv;
+        rend.material = ParentRow.Side == Player.Blue ? GameManager.Instance.BlueMaterial : GameManager.Instance.RedMaterial;
         
     }
 
@@ -83,7 +84,6 @@ public class GridSlot : MonoBehaviour
 
         mf = GetComponent<MeshFilter>();
         rend = GetComponent<MeshRenderer>();
-
         CreateMesh();
     }
 

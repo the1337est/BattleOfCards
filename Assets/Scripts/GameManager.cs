@@ -43,6 +43,8 @@ public class GameManager : Singleton<GameManager>
     public int CastleHPAtStart = 25;
     public float AttackDuration = 0.3f;
 
+    public Material BlueMaterial;
+    public Material RedMaterial;
 
     public GameState State;
 
@@ -149,14 +151,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            BlueCastle.SetFire(!BlueCastle.Enabled);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            RedCastle.SetFire(!RedCastle.Enabled);
+            UIManager.Instance.QuitGame();
         }
 
         if (State == GameState.Playing)
