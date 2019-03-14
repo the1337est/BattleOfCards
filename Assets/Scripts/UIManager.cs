@@ -58,7 +58,7 @@ public class UIManager : Singleton<UIManager>
 
     private void OnTurnComplete()
     {
-        UpdateTurn(Player.Blue);
+        //UpdateTurn(Player.Blue);
     }
 
     private void OnDisable()

@@ -259,6 +259,23 @@ MonoBehaviour:
   - {fileID: 2080737777}
   SlotPrefab: {fileID: 114506497300146354, guid: 1774ad2f8807f734c8fad88b01141269,
     type: 2}
+--- !u!1 &50909536 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1619558185565566, guid: 1d9cc67243350f643b8c562ed0503c49,
+    type: 2}
+  m_PrefabInternal: {fileID: 862042220}
+--- !u!65 &50909537
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 50909536}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9999998, y: 2, z: 2.0000005}
+  m_Center: {x: -0.000000923872, y: 0, z: 0}
 --- !u!1 &64523178
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 921926678}
+  Highlighted: 0
 --- !u!1001 &89382186
 Prefab:
   m_ObjectHideFlags: 0
@@ -627,6 +645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 300342383}
+  Highlighted: 0
 --- !u!65 &102149814
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1102,6 +1121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1521113172}
+  Highlighted: 0
 --- !u!65 &128515729
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1741,6 +1761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1521113172}
+  Highlighted: 0
 --- !u!65 &200655895
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1840,6 +1861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1753084373}
+  Highlighted: 0
 --- !u!65 &200890467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2033,6 +2055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 47709958}
+  Highlighted: 0
 --- !u!65 &221829713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2222,6 +2245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1257500676}
+  Highlighted: 0
 --- !u!65 &250685765
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2301,6 +2325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 921926678}
+  Highlighted: 0
 --- !u!33 &263400434
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2420,6 +2445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1257500676}
+  Highlighted: 0
 --- !u!65 &276447273
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3632,6 +3658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1257500676}
+  Highlighted: 0
 --- !u!65 &539520279
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3956,6 +3983,10 @@ MonoBehaviour:
   AttackDuration: 0.55
   BlueMaterial: {fileID: 2100000, guid: fa8a5e9ca7485b648844346eb3e71dbd, type: 2}
   RedMaterial: {fileID: 2100000, guid: c9d082747f59076498a117467cbbd88d, type: 2}
+  RedHighlightColor: {r: 0.9339623, g: 0.071762055, b: 0.057271298, a: 1}
+  BlueHighlightColor: {r: 0.2691349, g: 0.3770206, b: 0.9056604, a: 1}
+  RedSlotColor: {r: 0.50980395, g: 0.043137256, b: 0.03529412, a: 1}
+  BlueSlotColor: {r: 0.14509805, g: 0.18431373, b: 0.3764706, a: 1}
   State: 0
 --- !u!4 &592045725
 Transform:
@@ -5030,6 +5061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 300342383}
+  Highlighted: 0
 --- !u!65 &848328174
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5129,6 +5161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1753084373}
+  Highlighted: 0
 --- !u!65 &860932668
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5909,6 +5942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 300342383}
+  Highlighted: 0
 --- !u!65 &1019342880
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6219,6 +6253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1397836324}
+  Highlighted: 0
 --- !u!33 &1086291642
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6854,6 +6889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 2013221503}
+  Highlighted: 0
 --- !u!65 &1128618461
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7154,6 +7190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1397836324}
+  Highlighted: 0
 --- !u!4 &1157147676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4304001766518610, guid: 31d3a77f906791342bc79acdc84f5218,
@@ -7211,6 +7248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1521113172}
+  Highlighted: 0
 --- !u!65 &1183369591
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7749,6 +7787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1397836324}
+  Highlighted: 0
 --- !u!1001 &1297485673
 Prefab:
   m_ObjectHideFlags: 0
@@ -8333,6 +8372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 47709958}
+  Highlighted: 0
 --- !u!65 &1430444256
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8479,6 +8519,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 921926678}
+  Highlighted: 0
 --- !u!1 &1446330240
 GameObject:
   m_ObjectHideFlags: 0
@@ -10266,6 +10307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 2013221503}
+  Highlighted: 0
 --- !u!65 &1689798896
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11063,6 +11105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 1753084373}
+  Highlighted: 0
 --- !u!65 &1802226223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11899,6 +11942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 2013221503}
+  Highlighted: 0
 --- !u!65 &1928822416
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12372,6 +12416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Champion: {fileID: 0}
   ParentRow: {fileID: 47709958}
+  Highlighted: 0
 --- !u!65 &2080737778
 BoxCollider:
   m_ObjectHideFlags: 0

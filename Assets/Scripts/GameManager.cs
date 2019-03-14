@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -46,6 +47,11 @@ public class GameManager : Singleton<GameManager>
     public Material BlueMaterial;
     public Material RedMaterial;
 
+    public Color RedHighlightColor;
+    public Color BlueHighlightColor;
+    public Color RedSlotColor;
+    public Color BlueSlotColor;
+
     public GameState State;
 
     private Player turn;
@@ -82,6 +88,8 @@ public class GameManager : Singleton<GameManager>
         }
 
     }
+
+    private GridSlot highlightedSlot;
 
     private void CheckTurn()
     {
@@ -123,25 +131,34 @@ public class GameManager : Singleton<GameManager>
     {
 
         Debug.Log("Team " + side.ToString() + " finished attack");
+        //if (side == Player.Blue)
+        //{
+        //    StartCoroutine(grid.TeamB.Attack());
+        //}
+        //else
+        //{
+        //    if (OnTurnComplete != null)
+        //    {
+        State = GameState.Playing;
         if (side == Player.Blue)
         {
-            StartCoroutine(grid.TeamB.Attack());
+            Turn = Player.Red;
         }
         else
         {
-            if (OnTurnComplete != null)
-            {
-                State = GameState.Playing;
-                Turn = Player.Blue;
-                OnTurnComplete();
-            }
+            Turn = Player.Blue;
         }
+        OnTurnComplete();
+            //}
+        //}
     }
 
     public void StartGame()
     {
         State = GameState.Playing;
-        Turn = Player.Blue;
+
+        
+        Turn = Random.value > 0.5 ? Player.Blue : Player.Red;
         UIManager.Instance.Deck.LoadDeck(Turn);
         BlueCastle.HP = CastleHPAtStart;
         RedCastle.HP = CastleHPAtStart;
@@ -163,6 +180,7 @@ public class GameManager : Singleton<GameManager>
                 Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit dragHit;
                 bool onSlot = false;
+                bool canPlace = false;
 
                 if (Physics.Raycast(r, out dragHit, 20))
                 {
@@ -175,13 +193,40 @@ public class GameManager : Singleton<GameManager>
                             {
                                 if (slot.IsEmpty)
                                 {
+                                    canPlace = true;
                                     onSlot = true;
                                     currentSlot = slot;
+                                    currentSlot.Highlight(true);
+                                    highlightedSlot = currentSlot;
                                     Target.transform.position = new Vector3(slot.transform.position.x, 0.25f, slot.transform.position.z);
                                 }
                             }
                         }
+                        else
+                        {
+                            Vector3 pos = dragHit.point;
+                            Target.transform.position = new Vector3(pos.x, 0.25f, pos.z);
+                        }
                     }
+                }
+
+                Target.transform.localScale = canPlace ? Vector3.one * 0.5f : Vector3.one * 0.3f;
+
+                if (canPlace)
+                {
+                    if (highlightedSlot != null)
+                    {
+                        highlightedSlot.Highlight(true);
+                    }
+
+                }
+                else
+                {
+                    if (highlightedSlot != null)
+                    {
+                        highlightedSlot.Highlight(false);
+                    }
+                    highlightedSlot = null;
                 }
 
                 if (!onSlot)
@@ -205,6 +250,7 @@ public class GameManager : Singleton<GameManager>
                             Target.transform.localPosition = Vector3.up * 0.25f;
                             Target.Slot = currentSlot;
                             currentSlot.Champion = Target;
+                            currentSlot.Highlight(false);
                             HealthBar bar = Instantiate(HealthBarPrefab, WorldSpace.transform);
                             Target.Bar = bar;
                             Target.Spawn();
@@ -257,16 +303,18 @@ public class GameManager : Singleton<GameManager>
     {
         if (Turn == Player.Blue)
         {
-            Turn = Player.Red;
+            State = GameState.Animating;
             Data = Data.Add(Player.Blue, StatType.Mana, ManaPerRound);
+            Simulate();
+            Turn = Player.Red;
         }
         else
         {
             
             State = GameState.Animating;
-            Turn = Player.Blue;
             Data = Data.Add(Player.Red, StatType.Mana, ManaPerRound);
             Simulate();
+            Turn = Player.Blue;
         }
         UIManager.Instance.Deck.LoadDeck(Turn);
     }
@@ -279,6 +327,7 @@ public class GameManager : Singleton<GameManager>
             currentDeckSlot = slot;
             Dragging = true;
             Champion c = Instantiate(ChampionPrefab, transform);
+            c.transform.localScale = Vector3.one * 0.3f;
             c.Data = currentChampion;
             c.SetColor(champion.Background);
             Target = c;
@@ -294,7 +343,14 @@ public class GameManager : Singleton<GameManager>
 
     public void Simulate()
     {
-        StartCoroutine(grid.TeamA.Attack());
+        if (Turn == Player.Blue)
+        {
+            StartCoroutine(grid.TeamA.Attack());
+        }
+        else
+        {
+            StartCoroutine(grid.TeamB.Attack());
+        }
     }
 
     public void GameOver(Player player)

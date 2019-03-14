@@ -13,7 +13,10 @@ public class GridSlot : MonoBehaviour
 
     MeshFilter mf;
     MeshRenderer rend;
+    Color defaultColor;
 
+
+    public bool Highlighted = false;
     public bool IsEmpty
     {
         get
@@ -98,12 +101,29 @@ public class GridSlot : MonoBehaviour
             }
         }
     }
-
+    private void Awake()
+    {
+        rend = GetComponent<MeshRenderer>();
+    }
     public void Clear()
     {
         Debug.Log("Destroying " + gameObject.name);
         Destroy(Champion.gameObject);
         Champion = null;
+    }
+
+    public void Highlight(bool enabled)
+    {
+        if (enabled && !Highlighted)
+        {
+            Highlighted = true;
+            rend.material.color = ParentRow.Side == Player.Blue ? GameManager.Instance.BlueHighlightColor : GameManager.Instance.RedHighlightColor;
+        }
+        else
+        {
+            rend.material.color = ParentRow.Side == Player.Blue ? GameManager.Instance.BlueSlotColor : GameManager.Instance.RedSlotColor;
+        }
+
     }
 
 }
