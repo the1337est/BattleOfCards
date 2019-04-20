@@ -36,7 +36,7 @@ public class Champion : MonoBehaviour
 
     public void SetColor(Color color)
     {
-        GetComponent<MeshRenderer>().material.color = color;
+        //GetComponent<MeshRenderer>().material.color = color;
     }
 
     private void Update()

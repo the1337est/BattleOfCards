@@ -9,6 +9,9 @@ public class GameManager : Singleton<GameManager>
 
     public const string CHAMPIONS_PATH = "Champions/";
     public Champion ChampionPrefab;
+
+    public Champion B1, B2, B3, R1, R2, R3;
+
     public HealthBar HealthBarPrefab;
 
     public Canvas WorldSpace;
@@ -326,7 +329,31 @@ public class GameManager : Singleton<GameManager>
             currentChampion = champion;
             currentDeckSlot = slot;
             Dragging = true;
-            Champion c = Instantiate(ChampionPrefab, transform);
+
+            Champion champ = null;
+            switch (champion.Name)
+            {
+                case "Archer":
+                    champ = B1;
+                    break;
+                case "Barbarian":
+                    champ = B2;
+                    break;
+                case "Knight":
+                    champ = B3;
+                    break;
+                case "Minion":
+                    champ = R1;
+                    break;
+                case "Dragon":
+                    champ = R2;
+                    break;
+                case "Troll":
+                    champ = R3;
+                    break;
+            }
+
+            Champion c = Instantiate(champ, transform);
             c.transform.localScale = Vector3.one * 0.3f;
             c.Data = currentChampion;
             c.SetColor(champion.Background);
